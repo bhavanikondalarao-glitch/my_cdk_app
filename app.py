@@ -10,6 +10,8 @@ from my_cdk_app.my_cdk_aws_s3_stack import MyS3stack
 from my_cdk_app.my_cdk_aws_secret_manager import MySecretManager
 from my_cdk_app.my_cdk_aws_security_group import MySecurityGroup
 
+from my_cdk_app.my_cdk_app.my_cdk_aws_glue_connection import GlueJobStack
+
 
 
 app = cdk.App()
@@ -23,6 +25,12 @@ MySecurityGroup(app, "MySecurityGroup",env=cdk.Environment(
     account="047861165149",
     region="eu-north-1" 
 ))
+
+GlueJobStack(app,"GueJobStack",env=cdk.Environment(
+    account="047861165149",
+    region="eu-north-1" 
+)
+)
    
 
 app.synth()
