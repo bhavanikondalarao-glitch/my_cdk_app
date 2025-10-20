@@ -1,44 +1,40 @@
-# glue job creation is happeing in this file
-
-
-
-from aws_cdk import Stack
+from aws_cdk import Stack, CfnOutput
 from aws_cdk import (
     aws_glue as glue,
-    aws_iam as iam,
-    aws_ec2 as ec2
+    aws_iam as iam
 )
 from constructs import Construct
-from aws_cdk  import CfnOuput
 
 
 class GlueJobStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
         super().__init__(scope, construct_id, **kwargs)
-        existing_role = iam.Role.from_role_arn(self,"Existing-role",role_arn="arn:aws:iam::047861165149:user/Nany")
 
+        # Existing IAM Role (replace with actual role ARN)
+        existing_role = iam.Role.from_role_arn(
+            self,
+            "ExistingRole",
+            role_arn="arn:aws:iam::047861165149:role/Nany"  # make sure this is a *role*, not *user*
+        )
 
+        # Create the Glue Job
         glue_job = glue.CfnJob(
             self, "MyGlueJob",
             role=existing_role.role_arn,
             command=glue.CfnJob.JobCommandProperty(
                 name="glueetl",
-                script_location="s3://ukdatalake-nanyvbkr-bucketname/scripts/dummy_script.py"
+                script_location="s3://ukdatalake-nanyvbkr-bucketname/scripts/dummy_script.py",
                 python_version="3"
-            )
+            ),
             description="Demo Glue job for interview example",
-            glue_version="4.0",  # Example version
-            max_capacity=2.0,    # 2 DPUs
-            timeout=10 
+            glue_version="4.0",
+            max_capacity=2.0,
+            timeout=10,
+            connections=glue.CfnJob.ConnectionsListProperty(
+                connections=["my-glue-connection"]
+            )
+        )  # ✅ this closing parenthesis was missing!
 
-        
-)
-
-
-
-
-
-                               
-                               
-                               ,)
-
+        # Output Glue Job details
+        ##CfnOutput(self, "GlueJobName", value=glue_job.name)
+        #CfnOutput(self, "GlueJobArn", value=glue_job.ref)

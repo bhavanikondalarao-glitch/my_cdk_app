@@ -10,7 +10,8 @@ from my_cdk_app.my_cdk_aws_s3_stack import MyS3stack
 from my_cdk_app.my_cdk_aws_secret_manager import MySecretManager
 from my_cdk_app.my_cdk_aws_security_group import MySecurityGroup
 
-from my_cdk_app.my_cdk_app.my_cdk_aws_glue_connection import GlueJobStack
+#from my_cdk_app.my_cdk_app.my_cdk_aws_glue_connection import GlueJobStack
+from my_cdk_app.my_cdk_aws_glue_job import GlueJobStack
 
 
 
