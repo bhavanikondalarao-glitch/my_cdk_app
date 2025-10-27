@@ -4,6 +4,7 @@ from aws_cdk import (
     aws_iam as iam
 )
 from constructs import Construct
+from aws_cdk import Tags
 
 
 class GlueJobStack(Stack):
@@ -34,6 +35,7 @@ class GlueJobStack(Stack):
                 connections=["my-glue-connection"]
             )
         )  # ✅ this closing parenthesis was missing!
+        Tags.of(glue_job).add("Glue-job-tag", "Production")
 
         # Output Glue Job details
         ##CfnOutput(self, "GlueJobName", value=glue_job.name)

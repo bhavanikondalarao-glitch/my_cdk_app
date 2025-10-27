@@ -1,0 +1,44 @@
+{
+    "StackResourceSummaries": [
+        {
+            "LogicalResourceId": "CDKMetadata",
+            "PhysicalResourceId": "928376b0-ac47-11f0-a988-0ed5d14abc97",
+            "ResourceType": "AWS::CDK::Metadata",
+            "LastUpdatedTimestamp": "2025-10-18T17:26:36.744000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "nanyawss3BC92CAD7",
+            "PhysicalResourceId": "ukdatalake-nanyvbkr-bucketname",
+            "ResourceType": "AWS::S3::Bucket",
+            "LastUpdatedTimestamp": "2025-10-27T15:17:29.248000+00:00",
+            "ResourceStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "s3logbucketB3F3D688",
+            "PhysicalResourceId": "mys3stack-s3logbucketb3f3d688-fmdwbp3ctrt6",
+            "ResourceType": "AWS::S3::Bucket",
+            "LastUpdatedTimestamp": "2025-10-18T17:26:49.895000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "s3logbucketPolicy7C93F453",
+            "PhysicalResourceId": "mys3stack-s3logbucketb3f3d688-fmdwbp3ctrt6",
+            "ResourceType": "AWS::S3::BucketPolicy",
+            "LastUpdatedTimestamp": "2025-10-18T17:27:09.652000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

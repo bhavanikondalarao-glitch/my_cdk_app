@@ -6,6 +6,7 @@ from aws_cdk import (
     Duration
 )
 from constructs import Construct
+from aws_cdk import Tags
 
 class MyS3stack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs):
@@ -32,6 +33,7 @@ class MyS3stack(Stack):
             enabled=True,
             expiration=Duration.days(30)
         )
+        Tags.of(bucket).add("S3-tag", "Production")
 
         # Output bucket name
         CfnOutput(self, "BucketName", value=bucket.bucket_name)

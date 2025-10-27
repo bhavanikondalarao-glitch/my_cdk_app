@@ -1,0 +1,16 @@
+{
+    "TagSet": [
+        {
+            "Key": "aws:cloudformation:stack-id",
+            "Value": "arn:aws:cloudformation:eu-north-1:047861165149:stack/Mys3stack/928376b0-ac47-11f0-a988-0ed5d14abc97"
+        },
+        {
+            "Key": "aws:cloudformation:stack-name",
+            "Value": "Mys3stack"
+        },
+        {
+            "Key": "aws:cloudformation:logical-id",
+            "Value": "s3logbucketB3F3D688"
+        }
+    ]
+}

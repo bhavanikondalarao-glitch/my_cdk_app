@@ -1,0 +1,24 @@
+{
+    "StackResourceSummaries": [
+        {
+            "LogicalResourceId": "CDKMetadata",
+            "PhysicalResourceId": "0e405040-ac37-11f0-bdc9-0eb77bf76bf7",
+            "ResourceType": "AWS::CDK::Metadata",
+            "LastUpdatedTimestamp": "2025-10-18T15:28:23.671000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "cloudwatchD8561D28",
+            "PhysicalResourceId": "Nany-log-watch-group",
+            "ResourceType": "AWS::Logs::LogGroup",
+            "LastUpdatedTimestamp": "2025-10-27T15:18:03.528000+00:00",
+            "ResourceStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

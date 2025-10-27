@@ -8,6 +8,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 from aws_cdk.aws_logs import RetentionDays
+from aws_cdk import Tags
 
 class MyCdkAppStack(Stack):
 
@@ -21,6 +22,7 @@ class MyCdkAppStack(Stack):
         CfnOutput(self, "CloudWatchLogGroupArn",
             value=cloud_watch.log_group_arn,
             description="ARN of the CloudWatch Log Group")
+        Tags.of(cloud_watch).add("cloudwatch-tag", "Production")
 
 
 

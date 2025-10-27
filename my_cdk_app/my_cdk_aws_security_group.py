@@ -3,6 +3,7 @@ from aws_cdk import aws_ec2 as ec2
 from constructs import Construct
 
 from aws_cdk import CfnOutput
+from aws_cdk import Tags
 
 class MySecurityGroup(Stack):
     def __init__(self, scope:Construct, construct_id: str, **kwargs ):
@@ -23,5 +24,6 @@ class MySecurityGroup(Stack):
             connection=ec2.Port.all_traffic(),
             description = "Allow all outbound trafiic"
         )
+        Tags.of(security_group).add("Security-group-tag", "Production")
 
         CfnOutput(self,'security-group-output',value=security_group.security_group_id )

@@ -5,6 +5,7 @@ from aws_cdk import (
     aws_ec2 as ec2
 )
 from constructs import Construct
+from aws_cdk import Tags
 
 
 class GlueConnection(Stack):
@@ -47,3 +48,4 @@ class GlueConnection(Stack):
                 )
             )
         )
+        Tags.of(glue_connection).add("Glue-connection-tag", "Production")

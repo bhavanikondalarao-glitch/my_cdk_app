@@ -11,6 +11,7 @@ from aws_cdk import (
 )
 from constructs import Construct
 from aws_cdk.aws_logs import RetentionDays
+from aws_cdk import Tags
 
 class MyKMSStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kargs):
@@ -25,6 +26,8 @@ class MyKMSStack(Stack):
                            multi_region = False)
                            #policy = 'json_data')
         kms.Alias(self,"MYALIASKEY",alias_name="alias/glue-key",target_key=KMS_KEY)
+         # Add a tag to the bucket
+        Tags.of(KMS_KEY).add("KMS-tag", "Production")
 
         CfnOutput(self, "id-kms-key",value = KMS_KEY.key_arn)
 

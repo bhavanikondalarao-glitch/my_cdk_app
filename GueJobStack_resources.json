@@ -1,0 +1,24 @@
+{
+    "StackResourceSummaries": [
+        {
+            "LogicalResourceId": "CDKMetadata",
+            "PhysicalResourceId": "d98c6110-acb1-11f0-9dc4-0e7d587ea06b",
+            "ResourceType": "AWS::CDK::Metadata",
+            "LastUpdatedTimestamp": "2025-10-19T08:07:11.696000+00:00",
+            "ResourceStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "MyGlueJob",
+            "PhysicalResourceId": "MyGlueJob-P9rUalwb83UU",
+            "ResourceType": "AWS::Glue::Job",
+            "LastUpdatedTimestamp": "2025-10-27T15:16:35.522000+00:00",
+            "ResourceStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+{
+    "StackResourceSummaries": [
+        {
+            "LogicalResourceId": "CDKMetadata",
+            "PhysicalResourceId": "c3606dd0-ac3b-11f0-98ea-0a08dccc5733",
+            "ResourceType": "AWS::CDK::Metadata",
+            "LastUpdatedTimestamp": "2025-10-18T16:02:08.309000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "MYALIASKEYF4350B04",
+            "PhysicalResourceId": "alias/glue-key",
+            "ResourceType": "AWS::KMS::Alias",
+            "LastUpdatedTimestamp": "2025-10-18T16:03:12.071000+00:00",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        },
+        {
+            "LogicalResourceId": "mykmskeys1630BE28",
+            "PhysicalResourceId": "3df063d1-e065-489b-ab56-ded07cf844c6",
+            "ResourceType": "AWS::KMS::Key",
+            "LastUpdatedTimestamp": "2025-10-27T15:19:37.049000+00:00",
+            "ResourceStatus": "UPDATE_COMPLETE",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

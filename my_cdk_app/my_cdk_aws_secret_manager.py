@@ -7,6 +7,7 @@ import json
 
 from constructs import Construct
 from aws_cdk import Stack
+from aws_cdk import Tags
 
 
 class MySecretManager(Stack):
@@ -26,6 +27,7 @@ class MySecretManager(Stack):
 
     
         )
+        Tags.of(secret).add("Secret-tag", "Production")
 
         CfnOutput(self, "secret_manager", value=secret.secret_arn)
 
