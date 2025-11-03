@@ -4,3 +4,8 @@ Mys3stack
 MySecretManager
 MySecurityGroup
 GueJobStack
+
+
+"LogicalResourceId": "nanyawss3BC92CAD7",
+            "PhysicalResourceId": "ukdatalake-nanyvbkr-bucketname",
+            "ResourceType": "AWS::S3::Bucket",

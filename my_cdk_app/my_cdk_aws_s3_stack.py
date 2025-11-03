@@ -34,6 +34,7 @@ class MyS3stack(Stack):
             expiration=Duration.days(30)
         )
         Tags.of(bucket).add("S3-tag", "Production")
+        Tags.of(log_bucket).add("S3-Log-Bucket-Tag", "Production")
 
         # Output bucket name
         CfnOutput(self, "BucketName", value=bucket.bucket_name)

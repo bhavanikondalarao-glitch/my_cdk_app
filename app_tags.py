@@ -18,9 +18,10 @@ import boto3
 from botocore.exceptions import ClientError
 
 # Helper utilities
-def run_cdk_list(cdk_app: str) -> list:
-    cmd = ["cdk", "list", f"--app={cdk_app}"]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+def run_cdk_list() -> list:
+    cmd = ["cdk", "list", f"--app=python app.py"]
+    proc = subprocess.run(cmd, capture_output=True, text=True,shell=True)
+    print(proc.stdout)
     if proc.returncode != 0:
         print("cdk list failed:", proc.stderr.strip(), file=sys.stderr)
         sys.exit(proc.returncode)
@@ -35,24 +36,38 @@ def make_session(profile: Optional[str], region: Optional[str]):
     return session
 
 def list_stack_resources(cf, stack_name: str) -> List[Dict[str, Any]]:
+    #aws cloudformation list-stack-resources --stack-name YourStackName
+
     # handles a single page (CDK stacks usually small). add paginator if needed.
     paginator = cf.get_paginator("list_stack_resources")
     resources = []
     for page in paginator.paginate(StackName=stack_name):
         resources.extend(page.get("StackResourceSummaries", []))
+
+    print(f"Resources are : {resources}")
     return resources
+
+#{
+  #"LogicalResourceId": "MyBucket",
+  #"PhysicalResourceId": "my-cdk-stack-bucket-1vc62xmplgguf",
+  #"ResourceType": "AWS::S3::Bucket",
+  #"ResourceStatus": "CREATE_COMPLETE"
+#}
+
 
 # Tag fetching functions for supported resource types.
 def get_s3_bucket_tags(s3, bucket_name: str) -> Dict[str, str]:
     try:
         resp = s3.get_bucket_tagging(Bucket=bucket_name)
         tagset = resp.get("TagSet", [])
+        print(f'Tags for S3 bucket {bucket_name}: {tagset}')
         return {t["Key"]: t["Value"] for t in tagset}
     except ClientError as e:
         # bucket may not have tagging or name may be wrong
         # print debug in a concise form
         # print(f"S3 tagging error for {bucket_name}: {e}", file=sys.stderr)
         return {}
+
 
 def get_log_group_tags(logs, log_group_name: str) -> Dict[str, str]:
     try:
@@ -78,13 +93,32 @@ def get_glue_tags(glue, sts, region: str, account: str, job_name: str) -> Dict[s
     except ClientError:
         return {}
 
+#def get_secretsmanager_tags(secretsmanager, secret_id: str) -> Dict[str, str]:
+    #try:
+       # resp = secretsmanager.list_tags_for_resource(SecretId=secret_id)
+       # tags = resp.get("Tags", [])
+        #return {t["Key"]: t["Value"] for t in tags}
+    #except ClientError:
+        #return {}
+    
 def get_secretsmanager_tags(secretsmanager, secret_id: str) -> Dict[str, str]:
     try:
-        resp = secretsmanager.list_tags_for_resource(SecretId=secret_id)
-        tags = resp.get("Tags", [])
-        return {t["Key"]: t["Value"] for t in tags}
+        resp = secretsmanager.describe_secret(SecretId=secret_id)
+        tag_list = resp.get("Tags", []) or []
+        return {t["Key"]: t["Value"] for t in tag_list}
     except ClientError:
+        # Fallback: try list_secrets and match by ARN
+        try:
+            paginator = secretsmanager.get_paginator("list_secrets")
+            for page in paginator.paginate(Filters=[{"Key": "all", "Values": [""]}]):
+                for s in page.get("SecretList", []):
+                    if s.get("ARN") == secret_id or s.get("Name") == secret_id:
+                        tags = s.get("Tags", []) or []
+                        return {t["Key"]: t["Value"] for t in tags}
+        except ClientError:
+            pass
         return {}
+
 
 def get_ec2_tags(ec2, resource_id: str) -> Dict[str, str]:
     try:
@@ -133,20 +167,22 @@ def process_stack_resources(session, stack_name: str, resources: List[Dict[str, 
         print(f"{rtype} -> logical={logical}, physical={physical}")
 
         tags = {}
-        if rtype == "AWS::S3::BucketPolicy":
+        if rtype == "AWS::S3::Bucket" and rtype != "AWS::CDK::Metadata" and rtype != "AWS::S3::BucketPolicy":
             # try to derive bucket name from the physical id
-            bucket = _guess_bucket_from_physical_id(physical)
-            tags = get_s3_bucket_tags(s3, bucket)
-        elif rtype == "AWS::Logs::LogGroup":
-            tags = get_log_group_tags(logs, physical)
-        elif rtype == "AWS::KMS::Key":
-            tags = get_kms_tags(kms, physical)
-        elif rtype == "AWS::Glue::Job":
-            tags = get_glue_tags(glue, sts, region or session.region_name, account, physical)
-        elif rtype == "AWS::SecretsManager::Secret":
-            tags = get_secretsmanager_tags(secretsmanager, physical)
-        elif rtype == "AWS::EC2::SecurityGroup":
-            tags = get_ec2_tags(ec2, physical)
+            #bucket = _guess_bucket_from_physical_id(physical)
+            #tags = get_s3_bucket_tags(s3, bucket)
+            tags = get_s3_bucket_tags(s3, physical)
+
+        # elif rtype == "AWS::Logs::LogGroup":
+        #     tags = get_log_group_tags(logs, physical)
+        # elif rtype == "AWS::KMS::Key":
+        #     tags = get_kms_tags(kms, physical)
+        # elif rtype == "AWS::Glue::Job":
+        #     tags = get_glue_tags(glue, sts, region or session.region_name, account, physical)
+        # elif rtype == "AWS::SecretsManager::Secret":
+        #     tags = get_secretsmanager_tags(secretsmanager, physical)
+        # elif rtype == "AWS::EC2::SecurityGroup":
+            #tags = get_ec2_tags(ec2, physical)
         else:
             # unknown resource type can be extended easily
             continue
@@ -168,7 +204,7 @@ def main():
     parser.add_argument("--stacks", nargs="*", help="Optional list of stacks to check (overrides cdk list)")
     args = parser.parse_args()
 
-    stacks = args.stacks or run_cdk_list(args.app)
+    stacks = run_cdk_list()
     if not stacks:
         print("No stacks found.", file=sys.stderr)
         sys.exit(1)
