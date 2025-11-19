@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-nodeport-service
+  labels:
+    app: sample-app
+spec:
+  type: NodePort
+  selector:
+    app: sample-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30007
+# Note: The nodePort value must be within the range 30000-32767 unless otherwise configured in the cluster.
+#http://34.56.182.24:30007
+#http://34.133.242.164:30007

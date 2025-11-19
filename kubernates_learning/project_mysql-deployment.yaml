@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mysql
+  namespace: todo-app
+  labels:
+    app: todo-application
+    component: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-application
+      component: database
+  template:
+    metadata:
+      labels:
+        app: todo-application
+        component: database
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DATABASE_NAME
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MYSQL_PASSWORD
+        - name: MYSQL-USER
+          value: todouser
+        volumeMounts:
+        - name: mysql-storage # much match vloumes.name
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+  
+
+        

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: todo-app          # ← CONNECTION 1: To Stage 1 (namespace.yaml)
+  labels:
+    app: todo-application
+    component: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-application
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: todo-application    # ← CONNECTION 2: backend-service will use this
+        component: backend
+    spec:
+      containers:
+      - name: backend
+        image: benc-uk/nodejs-demoapp:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config   # ← CONNECTION 3: To Stage 2 (configmap.yaml)
+              key: DATABASE_HOST
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets  # ← CONNECTION 4: To Stage 3 (secrets.yaml)
+              key: MYSQL_PASSWORD
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"

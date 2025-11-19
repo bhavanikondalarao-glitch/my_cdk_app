@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service    # ← This becomes a PERMANENT DNS name
+  namespace: todo-app
+spec:
+  type: ClusterIP
+  selector:
+    app: todo-application
+    component: backend      # ← "Find all pods with these labels"
+  ports:
+  - port: 3000
+    targetPort: 3000
