@@ -1,0 +1,5 @@
+Recreate : It will delete all pods at a time and re-create all the pods at a time for update (there will be a downtime here)
+Ramped / RollingUpdate : here we will delete some percentage pof pods and some percantege of pods will update 
+Canary : we will take "n" number of pods and update them and test it , once we feel they are working , we will update all at a time,
+here I can use two different versions at a time
+Blue Green stretagey : We will create/replicate the cluster of old one and point load balancer to that (old cluster is green , new cluster is blue)
