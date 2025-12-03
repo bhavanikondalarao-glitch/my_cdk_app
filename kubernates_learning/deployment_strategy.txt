@@ -3,3 +3,131 @@ Ramped / RollingUpdate : here we will delete some percentage pof pods and some p
 Canary : we will take "n" number of pods and update them and test it , once we feel they are working , we will update all at a time,
 here I can use two different versions at a time
 Blue Green stretagey : We will create/replicate the cluster of old one and point load balancer to that (old cluster is green , new cluster is blue)
+
+
+---
+
+# 📘 **RollingUpdate Strategy — Definition**
+
+**RollingUpdate is a Kubernetes Deployment strategy where old pods are gradually replaced by new pods in small batches.
+This ensures zero-downtime because some pods stay running while others are updated.**
+
+Two main settings control the speed and availability:
+
+* **maxUnavailable** → How many pods can be unavailable (deleted) at the same time
+* **maxSurge** → How many extra pods (above the desired count) Kubernetes can create during update
+
+---
+
+# 📦 **Example YAML**
+
+```yaml
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 2
+    maxSurge: 1
+```
+
+Desired replicas: **5**
+
+---
+
+# 📝 **Step-By-Step Explanation**
+
+## ✅ **Initial State**
+
+```
+O O O O O   → 5 old pods running
+```
+
+---
+
+## ⭐ **Step 1: Kubernetes applies RollingUpdate**
+
+* Allowed to delete **2 pods** (maxUnavailable = 2)
+* Allowed to create **1 extra new pod** (maxSurge = 1)
+
+So K8s deletes 2 old pods:
+
+```
+O O O       (3 old left)
+```
+
+Then creates 1 new pod:
+
+```
+O O O N     (4 pods total)
+```
+
+---
+
+## ⭐ **Step 2: Kubernetes tries to reach desired replicas**
+
+Since we only have 4 pods (desired = 5),
+Kubernetes creates one more **new** pod.
+
+```
+O O O N N   (5 total)
+```
+
+Now:
+
+* 3 old pods
+* 2 new pods
+
+---
+
+## ⭐ **Step 3: Kubernetes continues replacing**
+
+Again, it can delete 2 old pods:
+
+```
+O       N N   (1 old left, 2 new → total 3 pods)
+```
+
+Then (because pod count is below 5),
+Kubernetes creates 1 or 2 new pods until it reaches 5.
+
+```
+O N N N N   (5 pods again)
+```
+
+---
+
+## ⭐ **Step 4: Final Replacement**
+
+Delete the last old pod:
+
+```
+N N N N     (4 pods)
+```
+
+Then create one more new pod:
+
+```
+N N N N N   (final 5 new pods)
+```
+
+---
+
+# 🎯 **Final State**
+
+All old pods replaced by **5 new pods**,
+without any downtime.
+
+---
+
+# 📌 **Key Takeaway to Remember**
+
+**RollingUpdate = Replace in batches.
+Some pods go down, some new ones come up.
+App always stays available.**
+
+* **maxUnavailable** controls how many old pods can be removed at once
+* **maxSurge** controls how many extra new pods can be created temporarily
+
+---
+
+
+
