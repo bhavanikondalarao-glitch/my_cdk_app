@@ -4,3 +4,22 @@
 3️⃣ ECS tells EC2: “Run this container”
 4️⃣ EC2 downloads container image from ECR
 5️⃣ EC2 runs the container using Docker
+
+⭐ How Fargate Works (Simple Technical Flow)
+
+Here is what changes:
+
+❌ No EC2
+❌ No Docker install
+❌ No ECS agent
+❌ No OS patching
+❌ No scaling servers
+✔ You only create:
+
+A Task Definition
+
+A Service
+
+Use Launch Type = FARGATE
+
+Fargate takes care of everything under the hood.
