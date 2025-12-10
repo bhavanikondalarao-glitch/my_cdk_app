@@ -1,0 +1,54 @@
+| Topic           | RDS                  | Aurora                          | DynamoDB                        |
+| --------------- | -------------------- | ------------------------------- | ------------------------------- |
+| Type            | Relational           | Relational                      | NoSQL                           |
+| Server needed   | Yes                  | Yes                             | No (Serverless)                 |
+| Compute–Storage | Together             | Separate                        | Fully abstract                  |
+| Storage         | EBS                  | Distributed Aurora storage      | Partitioned across AZs          |
+| Scaling         | Manual               | Auto (storage) + fast (compute) | Fully automatic                 |
+| Performance     | Good                 | Excellent                       | Extreme                         |
+| Failover        | Slow                 | Fast                            | Instant                         |
+| Best for        | Traditional SQL apps | High-performance SQL apps       | Massive scale, low-latency apps |
+
+  ⭐ 5. When Each Is Useful (Use Cases)
+✔ When to use RDS
+
+You need traditional SQL database behavior
+
+Your workload is predictable
+
+Database size and traffic are medium
+
+Using engines like Oracle/SQL Server (not supported in Aurora)
+
+Examples:
+HR systems, finance apps, small e-commerce, corporate apps, internal tools
+
+✔ When to use Aurora
+
+You need high performance (3–5x RDS)
+
+You need fast failover (<30 sec)
+
+You need many readers for read-heavy workloads
+
+You need high availability and reliability
+
+You want MySQL/Postgres but cloud optimized
+
+Examples:
+High-traffic e-commerce, mobile apps, gaming backends, SaaS apps, fintech, large APIs
+
+✔ When to use DynamoDB
+
+You need massive scale (millions of requests/sec)
+
+You need very low latency (ms)
+
+You need serverless architecture
+
+Your data structure is flexible / JSON
+
+You don’t need JOINs or complex SQL
+
+Examples:
+User profiles, IoT, gaming leaderboards, shopping carts, session stores, event-driven apps, microservices
