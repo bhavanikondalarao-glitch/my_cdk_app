@@ -1,0 +1,38 @@
+Step function is a service that helps you to create workflows
+- meaning you can connect multiple AWS services together and decide what 
+steps need to first , next and end
+
+In step function , your workflow is called as state machine
+The state machine have multiple states
+Each state is one step
+
+📌 Where Step Functions is Used? (Real-world cases)
+1️⃣ ETL / Data Pipeline
+
+Trigger Glue job
+
+Transform data
+
+Load to Redshift
+
+Notify completion
+
+2️⃣ Serverless Applications
+
+Lambda → Decision → Lambda → DynamoDB → Notification
+
+3️⃣ Machine Learning Pipelines
+
+Start training
+
+Wait until job completes
+
+Evaluate model
+
+Deploy
+
+Send results
+
+4️⃣ Microservice Orchestration
+
+Coordinate 10+ services easily.
