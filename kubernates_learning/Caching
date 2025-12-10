@@ -1,0 +1,23 @@
+ User Request
+        ↓
+ ┌───────────────────┐
+ │ 1. CDN Cache      │  <- Fastest, global edge locations
+ └───────────────────┘
+        ↓ (if miss)
+ ┌───────────────────┐
+ │ 2. Browser Cache  │  <- User device local copy
+ └───────────────────┘
+        ↓ (if miss)
+ ┌───────────────────┐
+ │ 3. App Cache      │  <- In-memory (Redis/Memcached)  - lives in server
+ └───────────────────┘
+        ↓ (if miss)
+ ┌─────────────────────────┐
+ │ 4. Database Cache       │ <- DB engine transparent caching
+ └─────────────────────────┘
+        ↓ (if miss)
+ ┌─────────────────────────┐
+ │ 5. Database / Origin    │ <- Actual storage (RDS, DynamoDB)
+ └─────────────────────────┘
+        ↓
+   Response goes back
