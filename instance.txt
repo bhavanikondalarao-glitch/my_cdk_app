@@ -1,0 +1,6 @@
+Type	                   Commitment	   Termination Risk       	Price         	      Best For
+On-Demand               	No	              None      	        💰💰💰 (High)	         Short workloads  --> general use case 
+Reserved Instance       	1–3 years	       None	            💰 (Low)             	Stable workloads  --> You commit to a specific instance type
+Savings Plan            	1–3 years	        None	             💰 (Low)            	Flexible compute  --> You commit to a spending amount
+Spot Instance       	    No	             High	              💰 (Very Low)	         Flexible workloads   --> AWS can terminate at any time
+Dedicated Host          	Yes       	   None	              💰💰💰💰 (Very High)    	Compliance, licensing  --. You get the entire server
