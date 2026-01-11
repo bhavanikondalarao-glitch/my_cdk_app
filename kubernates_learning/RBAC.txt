@@ -1,0 +1,84 @@
+Where do we define RBAC?
+
+👉 Everything is defined using YAML files
+
+You usually create two YAML files:
+
+One for permissions (Role)
+
+One for assignment (RoleBinding)
+
+4️⃣ Step A: Role YAML (WHAT they can do)
+
+This file says:
+
+“These actions are allowed on these resources”
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: development
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+How to understand this clearly:
+
+kind: Role
+→ This is a namespace-level permission
+
+namespace: development
+→ Permission works ONLY inside this namespace
+
+resources: ["pods"]
+→ What they can access (pods)
+
+verbs: ["get", "watch", "list"]
+→ What actions they can do
+
+get → see one pod
+
+list → see all pods
+
+watch → monitor changes
+
+👉 This Role DOES NOT give access to anyone yet
+
+5️⃣ Step B: RoleBinding YAML (WHO gets it)
+
+This file says:
+
+“Give this Role to this user”
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-binding
+  namespace: development
+subjects:
+- kind: User
+  name: "teammate@company.com"
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+
+How this connects everything:
+
+subjects → WHO
+
+User = teammate@company.com
+
+roleRef → WHAT
+
+Role name = pod-reader
+
+namespace: development
+
+Binding works only in this namespace
+
+👉 This is where the connection happens
+User ⇄ Role
