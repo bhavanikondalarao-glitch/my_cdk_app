@@ -1,0 +1,5 @@
+Liveness Probe: Checks whether the application is still running properly and restarts the container if the application is stuck or not responding.
+
+Readiness Probe: Checks whether the application is ready to receive traffic and removes the Pod from the Service if it is not ready, so users do not face errors.
+
+Startup Probe: Checks whether the application has started successfully and pauses liveness and readiness checks until the application finishes starting.
